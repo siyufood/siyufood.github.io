@@ -96,6 +96,29 @@ service.interceptors.response.use((response) => {
     return response.data
   }, err)
 
+// 启动自检：确认运行时接口地址真的可达。
+// 页面能打开、接口却报「资源未找到」，绝大多数是 config.js 被浏览器缓存成了旧的穿透域名，
+// 这里提前给出明确提示，而不是让用户面对满屏的 404 通知。
+const probeBackend = () => {
+  if (!/^https?:\/\//i.test(apiBaseUrl)) return // 同源部署（/jshERP-boot）无需自检
+  axios.get(apiBaseUrl + '/platformConfig/getPlatform/name', {
+    timeout: 8000,
+    headers: isNgrokTunnel ? { 'ngrok-skip-browser-warning': 'true' } : {}
+  }).catch((error) => {
+    const status = error.response ? error.response.status : 0
+    if (status === 0 || status === 404) {
+      Modal.error({
+        title: '后端接口未连通',
+        content: '当前页面使用的接口地址 ' + apiBaseUrl + ' 访问失败（HTTP ' + (status || '网络错误') +
+          '）。通常是公网穿透域名已变更或后端服务未启动，请按 Ctrl+F5 强制刷新后重试。',
+        okText: '刷新页面',
+        onOk: () => { window.location.reload() }
+      })
+    }
+  })
+}
+probeBackend()
+
 const installer = {
   vm: {},
   install (Vue, router = {}) {

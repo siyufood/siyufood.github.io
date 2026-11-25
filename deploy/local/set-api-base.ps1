@@ -36,6 +36,18 @@ window.ERP_CONFIG = {
 Write-Host "[write] $configPath"
 Write-Host "[api]   $ApiBase"
 
+# 给 index.html 里的 config.js 加上随接口地址变化的版本号，
+# 接口地址一变，浏览器就必须重新拉取 config.js，避免旧穿透域名缓存导致的 404「资源未找到」。
+$idxPath = Join-Path $script:RepoRoot 'jshERP-web\public\index.html'
+if (Test-Path $idxPath) {
+    $sha = [Security.Cryptography.SHA256]::Create()
+    $ver = ([BitConverter]::ToString($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes($ApiBase)))).Replace('-', '').ToLowerInvariant().Substring(0, 8)
+    $idx = [IO.File]::ReadAllText($idxPath)
+    $idx = [regex]::Replace($idx, 'config\.js\?v=[^"]*', "config.js?v=$ver")
+    [IO.File]::WriteAllText($idxPath, $idx, [Text.UTF8Encoding]::new($false))
+    Write-Host "[ver]   index.html -> config.js?v=$ver"
+}
+
 if ($Push) {
     $git = Get-GitExe
     $remote = & $git -C $script:RepoRoot remote get-url origin 2>$null
@@ -43,8 +55,8 @@ if ($Push) {
         Write-Warning 'No git origin; skip push.'
         return
     }
-    & $git -C $script:RepoRoot add jshERP-web/public/config.js | Out-Null
-    $status = & $git -C $script:RepoRoot status --porcelain -- jshERP-web/public/config.js
+    & $git -C $script:RepoRoot add jshERP-web/public/config.js jshERP-web/public/index.html | Out-Null
+    $status = & $git -C $script:RepoRoot status --porcelain -- jshERP-web/public/config.js jshERP-web/public/index.html
     if ($status) {
         & $git -C $script:RepoRoot commit -m "chore: point Pages at $ApiBase" | Out-Null
         if ($LASTEXITCODE -ne 0) { throw 'git commit failed.' }

@@ -89,6 +89,14 @@ jobs:
           NODE_OPTIONS: --openssl-legacy-provider
         run: npm run build
 
+      - name: Stamp config.js cache-buster
+        run: |
+          set -euo pipefail
+          ver=$(sha256sum dist/config.js | cut -c1-8)
+          echo "config.js version: $ver"
+          sed -i -E "s/config\.js\?v=[^\"']*/config.js?v=$ver/" dist/index.html
+          grep -o "config.js?v=[0-9a-f]*" dist/index.html
+
       - name: Verify Pages artifacts
         env:
           API_BASE: ${{ steps.apibase.outputs.api_base }}
@@ -98,6 +106,8 @@ jobs:
           test -f dist/404.html
           test -f dist/.nojekyll
           grep -q "white-space:nowrap" dist/css/*.css
+          ! grep -q "__CFG_VER__" dist/index.html
+          grep -q "config.js?v=" dist/index.html
           if [ -n "${API_BASE}" ]; then grep -q "${API_BASE}" dist/config.js; fi
 
       - name: Upload frontend dist for image build

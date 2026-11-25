@@ -239,7 +239,9 @@
     }
     /* 滚动条优化 end */
   </style>
-  <script src="<%= BASE_URL %>config.js"></script>
+  <!-- v= 后面的版本号随接口地址变化，接口地址一变浏览器就必须重新拉取 config.js，
+       避免旧穿透域名被缓存后接口全 404（表现为「系统提示 很抱歉，资源未找到!」） -->
+  <script src="<%= BASE_URL %>config.js?v=d55d8b7a"></script>
   <script>
     function getPlatform(type) {
       let res = '';
