@@ -44,7 +44,7 @@
 在 PowerShell 中执行：
 
 ```powershell
-cd E:\管伊佳ERP\siyu-erp-pages
+cd E:\思雨食品ERP\siyu-erp-pages
 .\deploy\local\bootstrap.ps1
 ```
 
