@@ -160,8 +160,8 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: |
-            ghcr.io/smxcxlm/siyu-erp-frontend:latest
-            ghcr.io/smxcxlm/siyu-erp-frontend:${{ github.sha }}
+            ghcr.io/siyufood/siyu-erp-frontend:latest
+            ghcr.io/siyufood/siyu-erp-frontend:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -194,7 +194,7 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: |
-            ghcr.io/smxcxlm/siyu-erp-backend:latest
-            ghcr.io/smxcxlm/siyu-erp-backend:${{ github.sha }}
+            ghcr.io/siyufood/siyu-erp-backend:latest
+            ghcr.io/siyufood/siyu-erp-backend:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

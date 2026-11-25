@@ -2,9 +2,9 @@
 
 石门思雨食品有限公司 ERP V3.6 的 GitHub Pages 部署工程。
 
-- Pages 入口：<https://smxcxlm.github.io>
+- Pages 入口：<https://siyufood.github.io>
 - 前端：Vue 2 + Ant Design Vue，由 GitHub Actions 自动构建并发布
-- 后端镜像：GitHub Actions 构建后推送 `ghcr.io/smxcxlm/siyu-erp-backend`
+- 后端镜像：GitHub Actions 构建后推送 `ghcr.io/siyufood/siyu-erp-backend`
 - 本地运行：Windows 便携版 MariaDB + Redis + JRE 8 + Caddy + ngrok；如本机已有 MySQL/Redis，可直接复用现有数据
 - 数据：保存在本机 MySQL/MariaDB；GitHub 不托管数据库
 
@@ -14,7 +14,7 @@
 
 ```text
 浏览器
-  └─ https://smxcxlm.github.io          (GitHub Pages 静态前端)
+  └─ https://siyufood.github.io          (GitHub Pages 静态前端)
        └─ https://xxxx.ngrok.app/jshERP-boot  (ngrok HTTPS)
             └─ 本机 Caddy :9999          (CORS + 反向代理)
                  └─ Spring Boot :9998    (ERP 后端)
@@ -28,16 +28,16 @@
 
 ## 一、GitHub Pages 首次启用
 
-1. 打开仓库 `SMXCXLM/SMXCXLM.github.io` 的 **Settings → Pages**。
+1. 打开仓库 `siyufood/siyufood.github.io` 的 **Settings → Pages**。
 2. **Source** 选择 **GitHub Actions**，不要选 “Deploy from a branch”。
 3. 推送到 `main` 后，`.github/workflows/deploy.yml` 会：
    - `npm ci` + `npm run build` 构建 Vue 前端；
    - 生成 `404.html`（Vue history 路由回退）和 `.nojekyll`；
    - 上传并部署到 Pages；
    - 同时构建后端 Docker 镜像并推送 GHCR。
-4. 首次 Actions 完成后访问 <https://smxcxlm.github.io>。
+4. 首次 Actions 完成后访问 <https://siyufood.github.io>。
 
-如果 Pages 页面显示 404，先确认仓库名必须是 `SMXCXLM.github.io`，并确认 Pages Source 已选择 **GitHub Actions**。
+如果 Pages 页面显示 404，先确认仓库名必须是 `siyufood.github.io`，并确认 Pages Source 已选择 **GitHub Actions**。
 
 ## 二、本机首次安装
 
@@ -136,15 +136,15 @@ Compose 会启动 MariaDB、Redis、后端和 Caddy。数据库初始化脚本�
 Actions 构建的镜像：
 
 ```text
-ghcr.io/smxcxlm/siyu-erp-backend:latest
-ghcr.io/smxcxlm/siyu-erp-backend:<commit-sha>
+ghcr.io/siyufood/siyu-erp-backend:latest
+ghcr.io/siyufood/siyu-erp-backend:<commit-sha>
 ```
 
 默认 GHCR 包是私有的。需要在本机拉取时：
 
 ```powershell
-docker login ghcr.io -u SMXCXLM
-docker pull ghcr.io/smxcxlm/siyu-erp-backend:latest
+docker login ghcr.io -u siyufood
+docker pull ghcr.io/siyufood/siyu-erp-backend:latest
 ```
 
 也可以在 GitHub 的 Package 设置中把包改为 public。便携版本机运行直接使用仓库内的 `deploy/backend/jshERP.jar`，不依赖 GHCR。

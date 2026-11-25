@@ -179,6 +179,6 @@ if ($publicUrl) {
 }
 
 Write-Host ''
-Write-Host 'Pages frontend: https://smxcxlm.github.io'
+Write-Host 'Pages frontend: https://siyufood.github.io'
 Write-Host 'Local backend:  http://127.0.0.1:9998/jshERP-boot'
 Write-Host 'Local gateway:  http://127.0.0.1:9999/jshERP-boot'

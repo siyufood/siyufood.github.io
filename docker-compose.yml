@@ -38,7 +38,7 @@ services:
       retries: 12
 
   backend:
-    image: ghcr.io/smxcxlm/siyu-erp-backend:latest
+    image: ghcr.io/siyufood/siyu-erp-backend:latest
     build:
       context: .
       dockerfile: deploy/backend/Dockerfile
