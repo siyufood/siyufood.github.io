@@ -1,0 +1,33 @@
+services:
+  mariadb:
+    image: ghcr.io/siyufood/mariadb:10.11
+    container_name: siyu-mariadb
+    restart: unless-stopped
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_general_ci
+      - --lower_case_table_names=1
+    environment:
+      MARIADB_ROOT_PASSWORD: "123456"
+      TZ: Asia/Shanghai
+    ports:
+      - "3307:3306"
+    volumes:
+      - /mnt/e/jshERP-dev/mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -uroot -p123456 --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+  redis:
+    image: ghcr.io/siyufood/redis:7-alpine
+    container_name: siyu-redis
+    restart: unless-stopped
+    command: ["redis-server", "--requirepass", "1234abcd", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - siyu_redis:/data
+
+volumes:
+  siyu_redis:

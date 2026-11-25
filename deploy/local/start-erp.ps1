@@ -215,7 +215,31 @@ function Test-DbAuth {
     finally { Remove-Item Env:\MYSQL_PWD -ErrorAction SilentlyContinue }
 }
 
-if (Test-Port -Port $dbPort -HostName $dbHost) {
+function Start-DbContainers {
+    # 优先用 GHCR 镜像（ghcr.io/siyufood/mariadb|redis）在 WSL Docker 中运行数据库
+    param([int]$TimeoutSeconds = 180)
+    if (Test-Port -Port $dbPort) { return $true }
+    $compose = Join-Path $LocalRoot 'docker-db.yml'
+    if (-not (Test-Path -LiteralPath $compose)) { Write-Log '[db] 未找到 docker-db.yml，跳过容器模式' 'WARN'; return $false }
+    $wslExe = Join-Path $env:WINDIR 'System32\wsl.exe'
+    if (-not (Test-Path -LiteralPath $wslExe)) { Write-Log '[db] 未安装 WSL，跳过容器模式' 'WARN'; return $false }
+    $drive = $compose.Substring(0, 1).ToLower()
+    $mntPath = '/mnt/' + $drive + ($compose.Substring(2) -replace '\\', '/')
+    $cmd = "mkdir -p /opt/siyu-erp && cp '$mntPath' /opt/siyu-erp/docker-db.yml && (systemctl start docker 2>/dev/null || service docker start 2>/dev/null || true) && cd /opt/siyu-erp && docker compose -f docker-db.yml up -d"
+    Write-Log '[db] 通过 GHCR 容器启动 MariaDB/Redis…'
+    try { $null = & $wslExe -d Ubuntu-22.04 -u root -e bash -lc $cmd 2>&1 } catch { Write-Log ('[db] 容器启动失败: ' + $_.Exception.Message) 'WARN' }
+    if (Test-Port -Port $dbPort) { Write-Log ("[db] 容器 MariaDB 已就绪 :$dbPort") 'OK'; return $true }
+    if (Wait-Port -Port $dbPort -TimeoutSeconds $TimeoutSeconds -Name 'MariaDB(容器)') {
+        Write-Log ("[db] 容器 MariaDB 就绪 :$dbPort") 'OK'
+        return $true
+    }
+    Write-Log '[db] 容器未就绪，回退到便携 MariaDB' 'WARN'
+    return $false
+}
+
+if (Start-DbContainers) {
+    if (-not (Test-DbAuth)) { Write-Log '[db] 容器已监听但 root 认证失败（检查 .env 的 DB_PASSWORD）' 'ERROR'; exit 1 }
+} elseif (Test-Port -Port $dbPort -HostName $dbHost) {
     if (Test-DbAuth) {
         Write-Log ("[db] 复用已运行的 MariaDB :$dbPort") 'OK'
     } else {

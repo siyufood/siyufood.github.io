@@ -190,3 +190,23 @@ plugins/                                插件表、菜单、授权 SQL
 **后端镜像构建失败**
 
 确认 `deploy/backend/jshERP.jar` 和 `deploy/backend/plugins/jsh-plugin-suite-1.0.0.jar` 已提交；`deploy/backend/Dockerfile` 使用预构建 JAR，不在 Actions 里重新编译 Java。
+
+## 数据库（GitHub Packages / GHCR 容器）
+
+数据库镜像已发布到 GitHub Packages，可直接在任意装了 Docker 的机器上运行：
+
+| 组件 | 镜像 |
+| --- | --- |
+| MariaDB 10.11 | `ghcr.io/siyufood/mariadb:10.11` |
+| Redis 7 | `ghcr.io/siyufood/redis:7-alpine` |
+
+本机（Windows + WSL2 Ubuntu-22.04）运行方式：`deploy/local/docker-db.yml`
+
+```bash
+# 在 WSL 内
+docker compose -f /opt/siyu-erp/docker-db.yml up -d
+```
+
+- 端口：MariaDB `3307->3306`，Redis `6379->6379`（root 密码 `123456`，Redis 密码 `1234abcd`，可在 `.env` 调整）
+- MariaDB 数据目录以绑定挂载方式指向 `E:\jshERP-dev\mysql-data`，与便携版 MariaDB 共用同一份数据，避免双份数据分叉
+- `deploy/local/start-erp.ps1` 启动时会优先尝试用 GHCR 容器拉起数据库；WSL 不可用时自动回退到 `deploy/local/.tools` 里的便携 MariaDB/Redis（同一数据目录）
