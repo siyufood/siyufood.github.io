@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$ApiBase,
     [switch]$FromNgrok,
     [switch]$Push

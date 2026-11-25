@@ -1,4 +1,4 @@
-. "$PSScriptRoot\common.ps1"
+﻿. "$PSScriptRoot\common.ps1"
 
 # Only stop processes that this local stack started (tracked by deploy/local/run/*.pid).
 # Existing system services on 3307/6379 are left untouched.

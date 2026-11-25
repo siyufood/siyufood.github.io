@@ -1,4 +1,4 @@
-param()
+﻿param()
 
 . "$PSScriptRoot\common.ps1"
 

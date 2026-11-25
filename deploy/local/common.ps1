@@ -1,4 +1,4 @@
-# Shared helpers for the portable Windows stack.
+﻿# Shared helpers for the portable Windows stack.
 $ErrorActionPreference = 'Stop'
 $script:RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $script:LocalRoot = $PSScriptRoot
