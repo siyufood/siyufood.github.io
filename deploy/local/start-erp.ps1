@@ -628,6 +628,11 @@ Write-Host ("  MariaDB     : 127.0.0.1:{0}" -f $dbPort)
 Write-Host ("  Redis       : 127.0.0.1:{0}" -f $redisPort)
 Write-Host ("  后端直连    : http://127.0.0.1:{0}/jshERP-boot" -f $backendPort)
 Write-Host ("  网关(Caddy) : http://127.0.0.1:{0}/jshERP-boot" -f $gatewayPort)
+$lanIp = (Get-NetIPAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue |
+    Where-Object { $_.IPAddress -notlike '127.*' -and $_.IPAddress -notlike '169.254*' } |
+    Select-Object -First 1).IPAddress
+if (-not $lanIp) { $lanIp = '127.0.0.1' }
+Write-Host ("  内网登录    : http://{0}:{1}/user/login  （同一局域网设备可直接访问）" -f $lanIp, $gatewayPort)
 if ($publicBase) { Write-Host ("  公网后端    : $publicBase") }
 Write-Host ("  Pages 入口  : {0}/user/login" -f $pagesUrl)
 Write-Host ("  Actions     : https://github.com/{0}/actions" -f $publicRepo)

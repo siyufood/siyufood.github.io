@@ -9,6 +9,14 @@
 		respond "" 204
 	}
 
+	# 内网登录（同源）：/config.js 固定返回相对接口地址，
+	# 这样 9999 端口同时提供前端页面和接口，不再依赖公网穿透域名。
+	handle /config.js* {
+		header Content-Type "application/javascript; charset=utf-8"
+		header Cache-Control "no-store"
+		respond `window.ERP_CONFIG = { apiBase: '/jshERP-boot' };` 200
+	}
+
 	# The Spring Boot app keeps its /jshERP-boot context path.
 	handle /jshERP-boot* {
 		header Access-Control-Allow-Origin "*"
@@ -16,7 +24,11 @@
 		reverse_proxy {$BACKEND_ADDR}
 	}
 
+	# 内网登录前端（SPA）：直接由网关对外提供 jshERP-web/dist
 	handle {
-		respond "Siyu ERP API gateway is running" 200
+		root * E:/思雨食品ERP/siyu-erp-pages/jshERP-web/dist
+		encode gzip
+		try_files {path} /index.html
+		file_server
 	}
 }

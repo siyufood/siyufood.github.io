@@ -210,3 +210,16 @@ docker compose -f /opt/siyu-erp/docker-db.yml up -d
 - 端口：MariaDB `3307->3306`，Redis `6379->6379`（root 密码 `123456`，Redis 密码 `1234abcd`，可在 `.env` 调整）
 - MariaDB 数据目录以绑定挂载方式指向 `E:\jshERP-dev\mysql-data`，与便携版 MariaDB 共用同一份数据，避免双份数据分叉
 - `deploy/local/start-erp.ps1` 启动时会优先尝试用 GHCR 容器拉起数据库；WSL 不可用时自动回退到 `deploy/local/.tools` 里的便携 MariaDB/Redis（同一数据目录）
+
+## 十、内网登录地址（局域网直连）
+
+同一局域网内的电脑/手机可直接打开（不需要 GitHub Pages，也不需要公网穿透）：
+
+```
+http://<本机内网IP>:9999/user/login
+```
+
+- 本机当前：`http://192.168.1.18:9999/user/login`（WLAN `192.168.1.18/24`）；IP 变化时以 `start-erp.ps1` 启动完成时打印的「内网登录」为准
+- 9999 端口由 Caddy 同时提供「前端页面 + `/jshERP-boot` 接口」：`/config.js` 固定返回 `apiBase: '/jshERP-boot'`（同源、`no-store` 不缓存），因此内网链路与公网配置互不影响
+- 前端静态文件来自 `jshERP-web/dist`；重新构建（`npm run build`）或从 Actions 产物同步后，内网页面即更新
+- Windows 防火墙已有 Caddy 入站放行规则（专用/公用网络）；换机迁移时需对新路径重新放行 9999
