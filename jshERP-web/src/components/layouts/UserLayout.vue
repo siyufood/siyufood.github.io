@@ -170,7 +170,7 @@
 
           .top .header {
             margin-top: 2px;
-            margin-bottom: 34px;
+            margin-bottom: 48px;
             margin-left: -10px;
           }
         }
