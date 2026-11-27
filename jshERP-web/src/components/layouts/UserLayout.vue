@@ -169,8 +169,8 @@
           padding-bottom: 18px;
 
           .top .header {
-            margin-top: 10px;
-            margin-bottom: 20px;
+            margin-top: 2px;
+            margin-bottom: 34px;
             margin-left: -10px;
           }
         }
@@ -217,8 +217,8 @@
           .header {
             height: 44px;
             line-height: 44px;
-            margin-top: 20px;
-            margin-bottom: 35px;
+            margin-top: 8px;
+            margin-bottom: 48px;
             margin-left: -14px;
             .title {
               font-size: 35px;
