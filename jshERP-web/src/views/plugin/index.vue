@@ -34,10 +34,11 @@
   import Master from './Master'
   import FixedAssetPage from './Asset'
   import Commission from './Commission'
+  import FoodBatch from './FoodBatch'
 
   export default {
     name: 'PluginCenter',
-    components: { Prod, Ledger, Check, Audit, Stats, SalesProfit, Finance, Barcode, Invoice, Pos, Print, Master, FixedAssetPage, Commission },
+    components: { Prod, Ledger, Check, Audit, Stats, SalesProfit, Finance, Barcode, Invoice, Pos, Print, Master, FixedAssetPage, Commission, FoodBatch },
     data() {
       return {
         active: 'prod',
@@ -48,6 +49,7 @@
           { key: 'audit', title: '多级审核', icon: 'solution', comp: 'Audit' },
           { key: 'multi', title: '多属性库存', icon: 'appstore', comp: 'Stats', tab: 'multi' },
           { key: 'batch', title: '批次库存', icon: 'tags', comp: 'Stats', tab: 'batch' },
+          { key: 'foodbatch', title: '批次与效期', icon: 'calendar', comp: 'FoodBatch' },
           { key: 'serial', title: '序列号统计', icon: 'barcode', comp: 'Stats', tab: 'serial' },
           { key: 'negative', title: '负库存统计', icon: 'warning', comp: 'Stats', tab: 'negative' },
           { key: 'profit', title: '利润报表', icon: 'line-chart', comp: 'Stats', tab: 'profit' },

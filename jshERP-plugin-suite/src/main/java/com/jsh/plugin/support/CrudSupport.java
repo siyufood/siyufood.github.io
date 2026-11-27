@@ -31,7 +31,7 @@ public final class CrudSupport {
             "jsh_pd_bom", "jsh_pd_bom_item", "jsh_pd_bom_process", "jsh_pd_task",
             "jsh_pd_task_material", "jsh_pd_process_report", "jsh_pd_inspection", "jsh_pd_instock",
             "jsh_lg_voucher", "jsh_lg_voucher_entry", "jsh_sc_order", "jsh_sc_item",
-            "jsh_af_instance", "jsh_af_task", "jsh_lg_period"
+            "jsh_af_instance", "jsh_af_task", "jsh_lg_period", "jsh_food_batch"
     );
 
     public static void checkTable(String table) {
