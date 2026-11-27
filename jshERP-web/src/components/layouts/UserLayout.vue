@@ -3,14 +3,15 @@
     <div id="userLayout" :class="['user-layout-wrapper', device]">
       <div class="container">
         <div class="poster-img">
-          <img src="/static/rightImg.png?v=320">
+          <img src="/static/rightImg.jpg">
         </div>
         <div class="right-form">
           <div class="top">
             <div class="header">
               <a-row>
                 <a-col>
-                  <a href="/">
+                  <a href="/" class="brand">
+                    <img class="brand-logo" src="/static/logo.png" alt="思雨食品"/>
                     <span class="title">{{ systemTitle }}</span>
                     <small class="desc">V3.6™</small>
                   </a>
@@ -23,44 +24,10 @@
       </div>
     </div>
     <div class="footer" v-if="device === 'desktop'">
-      <div class="third-party-platform" v-if="isShowRight">
-        <div class="platform-info" @click="openAndroid()">
-          <img src="/static/Android.png" style="height:30px" >
-          <span>安卓版</span>
-        </div>
-        <div style="width:50px"></div>
-        <div class="platform-info" @click="openIPhone()">
-          <img src="/static/iPhone.png" style="height:30px" >
-          <span>iPhone版</span>
-        </div>
-        <div style="width:50px"></div>
-        <div class="platform-info" @click="openMiniProgram()">
-          <img src="/static/mini-program.png" style="height:30px" >
-          <span>小程序版</span>
-        </div>
-      </div>
       <p>
-        © 2015-2030 思雨食品 ERP - ® 石门思雨食品有限公司 版权所有™
+        © 2015-2030 思雨食品 ERP · 石门思雨食品有限公司 版权所有 · 技术支持：创薪联盟
       </p>
     </div>
-    <a-modal v-model="isAndroidShow" title="微信扫一扫下载安卓版" width="200" centered>
-      <template slot="footer">
-        <a-button key="back" @click="handleAndroidCancel">取消</a-button>
-      </template>
-      <div class="platform-modal"><img src="/static/android-code.png" style="width:200px" /></div>
-    </a-modal>
-    <a-modal v-model="isIphoneShow" title="微信扫一扫下载iPhone版" width="200" centered>
-      <template slot="footer">
-        <a-button key="back" @click="handleIphoneCancel">取消</a-button>
-      </template>
-      <div class="platform-modal"><img src="/static/iphone-code.png" style="width:200px" /></div>
-    </a-modal>
-    <a-modal v-model="isMiniProgramShow" title="微信扫一扫使用小程序版" width="200" centered>
-      <template slot="footer">
-        <a-button key="back" @click="handleMiniProgramCancel">取消</a-button>
-      </template>
-      <div class="platform-modal"><img src="/static/weixin-code.png" style="width:200px;" /></div>
-    </a-modal>
   </div>
 </template>
 
@@ -118,7 +85,7 @@
   .back-layout {
     width: 100%;
     height: 100%;
-    background-image: url(/static/rightImg.png?v=400);
+    background-image: url(/static/rightImg.jpg);
     background-size: cover;
     background-position: 0 50%;
     background-repeat: no-repeat;
@@ -128,10 +95,23 @@
 
   @media (max-width: 767px) {
     .back-layout {
-      background-image: url(/static/bgimg.png?v=1);
+      background-image: url(/static/rightImg.jpg);
       background-position: center top;
     }
   }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .brand-logo {
+    width: 34px;
+    height: 34px;
+    margin-right: 8px;
+    vertical-align: middle;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.12));
+  }
+
   #userLayout.user-layout-wrapper.mobile {
     position: fixed;
     left: 6%;

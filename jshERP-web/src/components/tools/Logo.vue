@@ -1,5 +1,6 @@
 <template>
   <div class="logo">
+    <img v-if="showTitle" class="brand-mark" src="/static/logo.png" alt="思雨食品"/>
     <h1 v-if="showTitle">{{ title }}</h1>
   </div>
 </template>
@@ -40,6 +41,12 @@
       h1 {
         font-size: 24px;
         color: #ffffff;
+      }
+      .brand-mark {
+        width: 30px;
+        height: 30px;
+        margin-right: 8px;
+        vertical-align: middle;
       }
       a {
         color: white;
