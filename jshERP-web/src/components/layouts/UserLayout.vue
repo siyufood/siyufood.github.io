@@ -97,6 +97,8 @@
     .back-layout {
       background-image: url(/static/rightImg.jpg);
       background-position: center top;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
   }
   .brand {
@@ -113,10 +115,12 @@
   }
 
   #userLayout.user-layout-wrapper.mobile {
-    position: fixed;
-    left: 6%;
-    top: 10%;
+    position: static;
+    left: auto;
+    top: auto;
     margin-left: 0px;
+    height: auto;
+    padding: 16px 0 32px;
   }
   .third-party-platform {
     display: flex;
@@ -148,9 +152,26 @@
 
     &.mobile {
       .container {
+        height: auto;
+
         .main {
           max-width: 368px;
           width: 98%;
+        }
+
+        .right-form {
+          width: 94%;
+          max-width: 340px;
+          height: auto;
+          min-height: 460px;
+          overflow: visible;
+          margin: 24px auto 0;
+          padding-bottom: 18px;
+
+          .top .header {
+            margin-top: 15px;
+            margin-bottom: 20px;
+          }
         }
       }
       .poster-img {
